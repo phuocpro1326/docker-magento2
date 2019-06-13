@@ -45,6 +45,9 @@ touch $CRON_LOG
 echo "cron.* $CRON_LOG" > /etc/rsyslog.d/cron.conf
 service rsyslog start
 
+mkdir -p /var/www/.config/psysh
+chown www-data:www-data /var/www/.config/psysh
+
 <?php endif ?>
 
 
