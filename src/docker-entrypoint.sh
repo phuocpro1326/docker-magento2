@@ -32,7 +32,6 @@ mkdir -p $MAGENTO_ROOT
 chown www-data:www-data $MAGENTO_ROOT
 
 <?php if ($flavour === 'cli'): ?>
-
 CRON_LOG=/var/log/cron.log
 
 # Setup Magento cron
@@ -45,11 +44,10 @@ touch $CRON_LOG
 echo "cron.* $CRON_LOG" > /etc/rsyslog.d/cron.conf
 service rsyslog start
 
+# Ensure Psy shell config folder is writable
 mkdir -p /var/www/.config/psysh
 chown www-data:www-data /var/www/.config/psysh
-
 <?php endif ?>
-
 
 # Configure Sendmail if required
 if [ "$ENABLE_SENDMAIL" == "true" ]; then
@@ -65,7 +63,6 @@ fi
     echo "Xdebug is enabled"
 
 <?php if ($flavour === 'cli'): ?>
-
 # Configure composer
 [ ! -z "${COMPOSER_GITHUB_TOKEN}" ] && \
     composer config --global github-oauth.github.com $COMPOSER_GITHUB_TOKEN
@@ -76,13 +73,9 @@ fi
 
 [ ! -z "${COMPOSER_BITBUCKET_KEY}" ] && [ ! -z "${COMPOSER_BITBUCKET_SECRET}" ] && \
     composer config --global bitbucket-oauth.bitbucket.org $COMPOSER_BITBUCKET_KEY $COMPOSER_BITBUCKET_SECRET
-
 <?php elseif ($flavour === 'fpm'): ?>
-
 # Configure PHP-FPM
 [ ! -z "${MAGENTO_RUN_MODE}" ] && sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
-
 <?php endif ?>
 
 exec "$@"
-

@@ -2,10 +2,6 @@ version: "2"
 services:
   varnish:
     image: meanbee/magento2-varnish:latest
-    environment:
-      - VIRTUAL_HOST=magento2.docker
-      - VIRTUAL_PORT=80
-      - HTTPS_METHOD=noredirect
     ports:
       - 80
     links:
@@ -22,22 +18,24 @@ services:
       - appdata
     env_file:
       - ./global.env
-    #environment:
-      #- VIRTUAL_HOST=magento2.docker
-      #- VIRTUAL_PORT=80
-      #- HTTPS_METHOD=noredirect
 
   fpm:
     hostname: fpm.magento2.docker
-    image: meanbee/magento2-php:7.0-fpm
+    image: meanbee/magento2-php:7.2-fpm
     ports:
       - 9000
     links:
       - db
+      - redis
+      - rabbitmq
+      - elasticsearch
     volumes_from:
       - appdata
     env_file:
       - ./global.env
+    # environment:
+      #- XDEBUG_CONFIG=remote_connect_back=0 remote_host=172.17.0.1
+      #- PHP_IDE_CONFIG=serverName=magento2.docker
 
   db:
     image: mariadb:10
@@ -54,9 +52,12 @@ services:
 
   cli:
     hostname: cli.magento2.docker
-    image: meanbee/magento2-php:7.0-cli
+    image: meanbee/magento2-php:7.2-cli
     links:
       - db
+      - redis
+      - rabbitmq
+      - elasticsearch
     volumes:
       - ~/.composer/cache:/root/.composer/cache
     volumes_from:
@@ -78,11 +79,49 @@ services:
       - M2SETUP_ADMIN_EMAIL=dummy@gmail.com
       - M2SETUP_ADMIN_USER=admin
       - M2SETUP_ADMIN_PASSWORD=password1
-      - M2SETUP_VERSION=2.1.*
+      - M2SETUP_VERSION=2.3.*
       # - M2SETUP_USE_SAMPLE_DATA=true
+      # - PHP_ENABLE_XDEBUG=false
+
+  elasticsearch:
+    image: elasticsearch:6.8.0
+    ports:
+      - 9200
+      - 9300
+    volumes_from:
+      - appdata
+    environment:
+      - discovery.type=single-node
+
+  kibana:
+    image: kibana:6.8.0
+    ports:
+      - 5601
+    links:
+      - elasticsearch
+    volumes_from:
+      - appdata
+    environment:
+      SERVER_NAME: kibana.magento2.docker
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200/
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379
+    volumes_from:
+      - appdata
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672
+      - 15672
+    volumes_from:
+      - appdata
 
   cron:
-    image: meanbee/magento2-php:7.0-cli
+    image: meanbee/magento2-php:7.2-cli
     hostname: magento2-cron.docker
     command: run-cron
     env_file:

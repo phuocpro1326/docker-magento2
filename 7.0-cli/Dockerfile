@@ -75,7 +75,7 @@ ADD etc/php-cli.ini /usr/local/etc/php/conf.d/zz-magento.ini
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install n98-magerun2.phar and move to /usr/local/bin/
-RUN curl -O https://files.magerun.net/n98-magerun2.phar && chmod +x ./n98-magerun2.phar && mv ./n98-magerun2.phar /usr/local/bin/
+RUN curl -O https://files.magerun.net/n98-magerun2-2.3.3.phar && chmod +x ./n98-magerun2-2.3.3.phar && mv ./n98-magerun2.phar /usr/local/bin/n98-magerun2.phar
 
 # Install magedbm2.phar and move to /usr/local/bin
 RUN curl -LO https://s3.eu-west-2.amazonaws.com/magedbm2-releases/magedbm2.phar && chmod +x ./magedbm2.phar && mv ./magedbm2.phar /usr/local/bin

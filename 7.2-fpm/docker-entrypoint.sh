@@ -32,7 +32,6 @@ mkdir -p $MAGENTO_ROOT
 chown www-data:www-data $MAGENTO_ROOT
 
 
-
 # Configure Sendmail if required
 if [ "$ENABLE_SENDMAIL" == "true" ]; then
     /etc/init.d/sendmail start
@@ -46,10 +45,7 @@ fi
     docker-php-ext-enable xdebug && \
     echo "Xdebug is enabled"
 
-
 # Configure PHP-FPM
 [ ! -z "${MAGENTO_RUN_MODE}" ] && sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
 
-
 exec "$@"
-
