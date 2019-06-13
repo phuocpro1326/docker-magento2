@@ -25,7 +25,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Install n98-magerun2.phar and move to /usr/local/bin/
 <?php if ($version === '7.0'): ?>
-RUN curl -O https://files.magerun.net/n98-magerun2-2.3.3.phar && chmod +x ./n98-magerun2-2.3.3.phar && mv ./n98-magerun2.phar /usr/local/bin/n98-magerun2.phar
+RUN curl -O https://files.magerun.net/n98-magerun2-2.3.3.phar && chmod +x ./n98-magerun2-2.3.3.phar && mv ./n98-magerun2-2.3.3.phar /usr/local/bin/n98-magerun2.phar
 <?php else: ?>
 RUN curl -O https://files.magerun.net/n98-magerun2.phar && chmod +x ./n98-magerun2.phar && mv ./n98-magerun2.phar /usr/local/bin/
 <?php endif ?>
