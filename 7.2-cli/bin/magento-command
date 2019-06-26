@@ -4,4 +4,4 @@
 
 MAGENTO_COMMAND="$MAGENTO_ROOT/bin/magento"
 
-exec sudo -u www-data -- php $MAGENTO_COMMAND "$@"
+exec sudo -Eu www-data -- php $MAGENTO_COMMAND "$@"
