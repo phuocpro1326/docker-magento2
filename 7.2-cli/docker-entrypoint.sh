@@ -60,6 +60,10 @@ fi
     docker-php-ext-enable xdebug && \
     echo "Xdebug is enabled"
 
+[ "$PHP_ENABLE_BLACKFIRE" = "true" ] && \
+    docker-php-ext-enable blackfire && \
+    echo "Black Fire is enabled"
+
 # Configure composer
 [ ! -z "${COMPOSER_GITHUB_TOKEN}" ] && \
     composer config --global github-oauth.github.com $COMPOSER_GITHUB_TOKEN

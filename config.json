@@ -47,6 +47,7 @@
       "etc/mail.ini": {},
       "etc/php-fpm.ini": {},
       "etc/php-xdebug.ini": {},
+      "etc/php-blackfire.ini": {},
       "etc/php-fpm.conf": {}
     },
     "phpExtensions": ["mcrypt"],
@@ -100,6 +101,7 @@
       "etc/mail.ini": {},
       "etc/php-fpm.ini": {},
       "etc/php-xdebug.ini": {},
+      "etc/php-blackfire.ini": {},
       "etc/php-fpm.conf": {}
     },
     "phpExtensions": ["mcrypt"],
@@ -153,6 +155,7 @@
       "etc/mail.ini": {},
       "etc/php-fpm.ini": {},
       "etc/php-xdebug.ini": {},
+      "etc/php-blackfire.ini": {},
       "etc/php-fpm.conf": {}
     },
     "phpExtensions": [],

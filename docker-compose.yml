@@ -36,6 +36,7 @@ services:
     # environment:
       #- XDEBUG_CONFIG=remote_connect_back=0 remote_host=172.17.0.1
       #- PHP_IDE_CONFIG=serverName=magento2.docker
+      #- PHP_ENABLE_BLACKFIRE=false
 
   db:
     image: mariadb:10

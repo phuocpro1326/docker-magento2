@@ -45,6 +45,10 @@ fi
     docker-php-ext-enable xdebug && \
     echo "Xdebug is enabled"
 
+[ "$PHP_ENABLE_BLACKFIRE" = "true" ] && \
+    docker-php-ext-enable blackfire && \
+    echo "Black Fire is enabled"
+
 # Configure PHP-FPM
 [ ! -z "${MAGENTO_RUN_MODE}" ] && sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
 

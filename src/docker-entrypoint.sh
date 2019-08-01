@@ -62,6 +62,10 @@ fi
     docker-php-ext-enable xdebug && \
     echo "Xdebug is enabled"
 
+[ "$PHP_ENABLE_BLACKFIRE" = "true" ] && \
+    docker-php-ext-enable blackfire && \
+    echo "Black Fire is enabled"
+
 <?php if ($flavour === 'cli'): ?>
 # Configure composer
 [ ! -z "${COMPOSER_GITHUB_TOKEN}" ] && \

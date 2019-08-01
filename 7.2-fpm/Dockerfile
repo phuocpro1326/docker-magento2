@@ -57,6 +57,16 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ENV MAGENTO_RUN_MODE developer
 ENV UPLOAD_MAX_FILESIZE 64M
+ENV PHP_ENABLE_BLACKFIRE false
+
+RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
+    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \
+    && mkdir -p /tmp/blackfire \
+    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
+    && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
+    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+
+ADD etc/php-blackfire.ini /usr/local/etc/php/conf.d/zz-blackfire-settings.ini
 
 ADD etc/php-fpm.ini /usr/local/etc/php/conf.d/zz-magento.ini
 
