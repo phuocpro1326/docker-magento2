@@ -13,11 +13,11 @@ fi
 MAGENTO_COMMAND="magento-command"
 
 if [ ! -f "$MAGENTO_ROOT/composer.json" ]; then
-    echo "Creating Magento ($M2SETUP_VERSION) project from composer"
+    echo "Creating Magento ($M2SETUP_PRODUCT $M2SETUP_VERSION) project from composer"
 
     composer create-project \
         --repository-url=https://repo.magento.com/ \
-        magento/project-community-edition=$M2SETUP_VERSION \
+        magento/project-$M2SETUP_PRODUCT-edition=$M2SETUP_VERSION \
         --no-interaction \
         $MAGENTO_ROOT
 
