@@ -38,6 +38,9 @@ echo "* * * * * www-data /usr/local/bin/php ${MAGENTO_ROOT}/bin/magento cron:run
 echo "* * * * * www-data /usr/local/bin/php ${MAGENTO_ROOT}/update/cron.php >> ${MAGENTO_ROOT}/var/log/update.cron.log" >> /etc/cron.d/magento
 echo "* * * * * www-data /usr/local/bin/php ${MAGENTO_ROOT}/bin/magento setup:cron:run >> ${MAGENTO_ROOT}/var/log/setup.cron.log" >> /etc/cron.d/magento
 
+# Disable module imklog since container doesn't have permission to read that log
+sed -i 's/^module.*imklog.*/#&/' /etc/rsyslog.conf
+
 # Get rsyslog running for cron output
 touch $CRON_LOG
 echo "cron.* $CRON_LOG" > /etc/rsyslog.d/cron.conf

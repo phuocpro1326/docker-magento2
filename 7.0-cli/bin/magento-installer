@@ -51,9 +51,13 @@ if [ ! "$M2SETUP_INSTALL_DB" = "false" ]; then
         --admin-user=$M2SETUP_ADMIN_USER \
         --admin-password=$M2SETUP_ADMIN_PASSWORD"
 
+    if [ -n "$M2SETUP_CACHE_BACKEND" ]; then
+        INSTALL_COMMAND="$INSTALL_COMMAND --cache-backend=$M2SETUP_CACHE_BACKEND"
+    fi
+
     # Use a separate value for secure base URL, if the variable is set
-    if [ -n "$M2SETUP_SECURE_BASE_URL" ]; then
-        INSTALL_COMMAND="$INSTALL_COMMAND --base-url-secure=$M2SETUP_SECURE_BASE_URL"
+    if [ -n "$M2SETUP_PAGE_CACHE" ]; then
+        INSTALL_COMMAND="$INSTALL_COMMAND --page-cache=$M2SETUP_PAGE_CACHE"
     fi
 
     # Only define a backend-frontname if the variable is set, or not empty.
@@ -71,7 +75,6 @@ if [ ! "$M2SETUP_INSTALL_DB" = "false" ]; then
 
     $INSTALL_COMMAND
     $MAGENTO_COMMAND index:reindex
-    $MAGENTO_COMMAND setup:static-content:deploy
 
 else
     echo "Skipping DB installation"
@@ -87,7 +90,8 @@ echo "Fixing file permissions.."
 
 find $MAGENTO_ROOT/pub -type f -exec chmod 664 {} \;
 find $MAGENTO_ROOT/pub -type d -exec chmod 775 {} \;
-find $MAGENTO_ROOT/var/generation -type d -exec chmod g+s {} \;
+[ -f "$MAGENTO_ROOT/var/generation" ] && find $MAGENTO_ROOT/var/generation -type d -exec chmod g+s {} \;
+[ -f "$MAGENTO_ROOT/generated/code" ] && find $MAGENTO_ROOT/generated/code -type d -exec chmod g+s {} \;
 
 chown -R www-data:www-data $MAGENTO_ROOT
 
