@@ -46,11 +46,6 @@ RUN docker-php-ext-configure \
 RUN docker-php-ext-install \
   <?php echo join(" \\ \n  ", $phpExtensions) ?>
 
-# Rebuild sodium extension with latest libsodium. No need to enable the sodium extension since it was already installed
-RUN echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list \
-  && apt-get update && apt-get -t buster install -y libsodium-dev \
-  && pecl install -f libsodium
-
 # Install Xdebug (but don't enable)
 <?php $xdebugVersion = ($xdebugVersion == 'latest' || $xdebugVersion == '') ? '' : '-' . $xdebugVersion; ?>
 RUN pecl install -o -f <?php printf("xdebug%s\n", $xdebugVersion) ?>
