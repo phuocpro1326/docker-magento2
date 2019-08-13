@@ -1,20 +1,21 @@
+# VCL version 5.0 is not supported so it should be 4.0 even though actually used Varnish version is 5
 vcl 4.0;
 
 import std;
-# The minimal Varnish version is 4.0
+# The minimal Varnish version is 5.0
 # For SSL offloading, pass the following header in your proxy server or load balancer: 'X-Forwarded-Proto: https'
 
 backend default {
     .host = "web";
     .port = "80";
-    .first_byte_timeout = 1200s;
-    .probe = {
-        .url = "/health_check.php";
-        .timeout = 2s;
-        .interval = 5s;
-        .window = 10;
-        .threshold = 5;
-   }
+    .first_byte_timeout = 600s;
+#    .probe = {
+#        .url = "/health_check.php";
+#        .timeout = 2s;
+#        .interval = 5s;
+#        .window = 10;
+#        .threshold = 5;
+#   }
 }
 
 sub vcl_recv {
@@ -157,10 +158,8 @@ sub vcl_backend_response {
    # If page is not cacheable then bypass varnish for 2 minutes as Hit-For-Pass
    if (beresp.ttl <= 0s ||
        beresp.http.Surrogate-control ~ "no-store" ||
-       (!beresp.http.Surrogate-Control &&
-       beresp.http.Cache-Control ~ "no-cache|no-store") ||
        beresp.http.Vary == "*") {
-       # Mark as Hit-For-Pass for the next 2 minutes
+        # Mark as Hit-For-Pass for the next 2 minutes
         set beresp.ttl = 120s;
         set beresp.uncacheable = true;
     }

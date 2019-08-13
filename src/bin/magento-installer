@@ -51,13 +51,20 @@ if [ ! "$M2SETUP_INSTALL_DB" = "false" ]; then
         --admin-user=$M2SETUP_ADMIN_USER \
         --admin-password=$M2SETUP_ADMIN_PASSWORD"
 
-    if [ -n "$M2SETUP_CACHE_BACKEND" ]; then
-        INSTALL_COMMAND="$INSTALL_COMMAND --cache-backend=$M2SETUP_CACHE_BACKEND"
+    if [ -n "$M2SETUP_SESSION_SAVE" ]; then
+        INSTALL_COMMAND="$INSTALL_COMMAND --session-save=$M2SETUP_SESSION_SAVE --session-save-redis-host=$M2SETUP_SESSION_SAVE_REDIS_HOST --session-save-redis-db=$M2SETUP_SESSION_SAVE_REDIS_DB"
     fi
 
-    # Use a separate value for secure base URL, if the variable is set
+    if [ -n "$M2SETUP_CACHE_BACKEND" ]; then
+        INSTALL_COMMAND="$INSTALL_COMMAND --cache-backend=$M2SETUP_CACHE_BACKEND --cache-backend-redis-server=$M2SETUP_CACHE_BACKEND_REDIS_SERVER --cache-backend-redis-db=$M2SETUP_CACHE_BACKEND_REDIS_DB"
+    fi
+
     if [ -n "$M2SETUP_PAGE_CACHE" ]; then
-        INSTALL_COMMAND="$INSTALL_COMMAND --page-cache=$M2SETUP_PAGE_CACHE"
+        INSTALL_COMMAND="$INSTALL_COMMAND --page-cache=$M2SETUP_PAGE_CACHE --page-cache-redis-server=$M2SETUP_PAGE_CACHE_REDIS_SERVER --page-cache-redis-db=$M2SETUP_PAGE_CACHE_REDIS_DB"
+    fi
+
+    if [ -n "$M2SETUP_AMQP_HOST" ]; then
+        INSTALL_COMMAND="$INSTALL_COMMAND --amqp-host=$M2SETUP_AMQP_HOST --amqp-user=$M2SETUP_AMQP_USER --amqp-password=$M2SETUP_AMQP_PASSWORD"
     fi
 
     # Only define a backend-frontname if the variable is set, or not empty.
@@ -78,6 +85,11 @@ if [ ! "$M2SETUP_INSTALL_DB" = "false" ]; then
 
 else
     echo "Skipping DB installation"
+fi
+
+if [ -n "$M2SETUP_AMQP_HOST" ]; then
+    echo "Install message queue topology"
+    $MAGENTO_COMMAND setup:upgrade
 fi
 
 echo "Fixing file permissions.."

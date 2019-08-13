@@ -3,14 +3,12 @@ services:
   varnish:
     build:
       context: varnish/
-    environment:
-      - VIRTUAL_HOST=magento2.docker
-      - VIRTUAL_PORT=80
-      - HTTPS_METHOD=noredirect
     ports:
-      - 80
+      - 80:80
     links:
       - web
+    # volumes:
+    #   - ./docker/provision/varnish/etc/varnish.vcl:/data/varnish.vcl
 
   web:
     build:
@@ -19,47 +17,59 @@ services:
       - 80
     links:
       - fpm
-      - db
     volumes_from:
       - appdata
+    volumes:
+      - ./docker/provision/nginx/etc/vhost.conf:/etc/nginx/conf.d/default.conf
     env_file:
       - ./global.env
-    #environment:
-      #- VIRTUAL_HOST=magento2.docker
-      #- VIRTUAL_PORT=80
-      #- HTTPS_METHOD=noredirect
 
   fpm:
     hostname: fpm.magento2.docker
     build:
-      context: 7.0-fpm/
+      context: 7.2-fpm/
     ports:
       - 9000
     links:
       - db
+      - redis
+      - rabbitmq
+      - elasticsearch
     volumes_from:
       - appdata
     env_file:
       - ./global.env
+    environment:
+      # - PHP_ENABLE_XDEBUG=true
+      # - PHP_ENABLE_BLACKFIRE=false
+      # - XDEBUG_CONFIG=remote_connect_back=0 remote_host=172.17.0.1
+      - PHP_IDE_CONFIG=serverName=magento2.docker
 
   db:
     image: mariadb:10
     ports:
-      - 3306
+      - 3306:3306
     volumes_from:
       - dbdata
+    # volumes:
+    #   - ./docker/provision/mysql/init:/docker-entrypoint-initdb.d
+    # command: --max_allowed_packet=32505856
     environment:
       - MYSQL_ROOT_PASSWORD=magento2
       - MYSQL_DATABASE=magento2
       - MYSQL_USER=magento2
       - MYSQL_PASSWORD=magento2
+      - TERM=meh
 
   cli:
     hostname: cli.magento2.docker
     build:
-      context: 7.0-cli/
+      context: 7.2-cli/
     links:
       - db
+      - redis
+      - rabbitmq
+      - elasticsearch
     volumes:
       - ~/.composer/cache:/root/.composer/cache
     volumes_from:
@@ -68,11 +78,29 @@ services:
       - ./global.env
       - ./composer.env
     environment:
+      # - PHP_ENABLE_XDEBUG=false
+      - XDEBUG_CONFIG=idekey=PHPSTORM remote_connect_back=0 remote_host=172.17.0.1
+      - PHP_IDE_CONFIG=serverName=dev.riki.local
+      - M2SETUP_PRODUCT=community
+      - M2SETUP_VERSION=2.3.*
+      - M2SETUP_USE_SAMPLE_DATA=true
       - M2SETUP_INSTALL_DB=true
       - M2SETUP_DB_HOST=db
       - M2SETUP_DB_NAME=magento2
       - M2SETUP_DB_USER=magento2
       - M2SETUP_DB_PASSWORD=magento2
+      - $M2SETUP_SESSION_SAVE=redis
+      - $M2SETUP_SESSION_SAVE_REDIS_HOST=redis
+      - $M2SETUP_SESSION_SAVE_REDIS_DB=0
+      - M2SETUP_CACHE_BACKEND=redis
+      - M2SETUP_CACHE_BACKEND_REDIS_SERVER=redis
+      - M2SETUP_CACHE_BACKEND_REDIS_DB=1
+      - M2SETUP_PAGE_CACHE=redis
+      - M2SETUP_PAGE_CACHE_REDIS_SERVER=redis
+      - M2SETUP_PAGE_CACHE_REDIS_DB=2
+      - M2SETUP_AMQP_HOST=rabbitmq
+      - M2SETUP_AMQP_USER=guest
+      - M2SETUP_AMQP_PASSWORD=guest
       - M2SETUP_BASE_URL=http://magento2.docker/
       # - M2SETUP_SECURE_BASE_URL=https://magento2.docker/
       - M2SETUP_BACKEND_FRONTNAME=admin
@@ -80,28 +108,55 @@ services:
       - M2SETUP_ADMIN_LASTNAME=User
       - M2SETUP_ADMIN_EMAIL=dummy@gmail.com
       - M2SETUP_ADMIN_USER=admin
-      - M2SETUP_ADMIN_PASSWORD=password1
-      - M2SETUP_VERSION=2.1.*
-      # - M2SETUP_USE_SAMPLE_DATA=true
+      - M2SETUP_ADMIN_PASSWORD=password1      
 
-  cron:
-    build:
-      context: 7.0-cli/
-    hostname: magento2-cron.docker
-    command: run-cron
-    environment:
-      - ENABLE_SENDMAIL=true
+  elasticsearch:
+    image: elasticsearch:6.8.0
+    ports:
+      - 9200
+      - 9300
     volumes_from:
       - appdata
+    environment:
+      - discovery.type=single-node
+
+  kibana:
+    image: kibana:6.8.0
+    ports:
+      - 5601:5601
     links:
-      - db
+      - elasticsearch
+    volumes_from:
+      - appdata
+    environment:
+      SERVER_NAME: kibana.magento2.docker
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200/
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379
+    volumes_from:
+      - appdata
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672
+      - 15672:15672
+    volumes_from:
+      - appdata
+    environment:
+      - RABBITMQ_NODENAME=node@rabbitmq    
 
   appdata:
     image: tianon/true
     volumes:
       - ./magento:/var/www/magento
+      - ./docker/data/redis:/data # redis
+      - ./docker/data/rabbitmq:/var/lib/rabbitmq
 
   dbdata:
     image: tianon/true
     volumes:
-      - /var/lib/mysql
+      - ./docker/data/mysql:/var/lib/mysql

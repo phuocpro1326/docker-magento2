@@ -3,7 +3,8 @@ $imageSpecificPackages = [
     'cron',
     'rsyslog',
     'mariadb-client',
-    'git'
+    'git',
+    'redis-tools'
 ];
 
 include "Dockerfile";

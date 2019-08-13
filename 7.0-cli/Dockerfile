@@ -21,7 +21,8 @@ RUN apt-get update \
     cron \ 
     rsyslog \ 
     mariadb-client \ 
-    git
+    git \ 
+    redis-tools
 
 # Configure the gd library
 RUN docker-php-ext-configure \
