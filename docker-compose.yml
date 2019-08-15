@@ -94,7 +94,9 @@ services:
       - M2SETUP_PAGE_CACHE=redis
       - M2SETUP_PAGE_CACHE_REDIS_SERVER=redis
       - M2SETUP_PAGE_CACHE_REDIS_DB=2
+      - M2SETUP_PAGE_CACHE_VARNISH=true
       - M2SETUP_AMQP_HOST=rabbitmq
+      - M2SETUP_AMQP_PORT=5672
       - M2SETUP_AMQP_USER=guest
       - M2SETUP_AMQP_PASSWORD=guest
       - M2SETUP_BASE_URL=http://magento2.docker/

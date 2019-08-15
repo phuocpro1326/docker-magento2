@@ -63,8 +63,12 @@ if [ ! "$M2SETUP_INSTALL_DB" = "false" ]; then
         INSTALL_COMMAND="$INSTALL_COMMAND --page-cache=$M2SETUP_PAGE_CACHE --page-cache-redis-server=$M2SETUP_PAGE_CACHE_REDIS_SERVER --page-cache-redis-db=$M2SETUP_PAGE_CACHE_REDIS_DB"
     fi
 
+    if [[ "$M2SETUP_PAGE_CACHE_VARNISH" = "true" ]]; then
+        INSTALL_COMMAND="$INSTALL_COMMAND --http-cache-hosts=varnish"
+    fi
+
     if [ -n "$M2SETUP_AMQP_HOST" ]; then
-        INSTALL_COMMAND="$INSTALL_COMMAND --amqp-host=$M2SETUP_AMQP_HOST --amqp-user=$M2SETUP_AMQP_USER --amqp-password=$M2SETUP_AMQP_PASSWORD"
+        INSTALL_COMMAND="$INSTALL_COMMAND --amqp-host=$M2SETUP_AMQP_HOST --amqp-port=$M2SETUP_AMQP_PORT --amqp-user=$M2SETUP_AMQP_USER --amqp-password=$M2SETUP_AMQP_PASSWORD"
     fi
 
     # Only define a backend-frontname if the variable is set, or not empty.
@@ -89,7 +93,11 @@ fi
 
 if [ -n "$M2SETUP_AMQP_HOST" ]; then
     echo "Install message queue topology"
-    MAGENTO_COMMAND setup:upgrade
+    $MAGENTO_COMMAND setup:upgrade
+fi
+
+if [[ "$M2SETUP_PAGE_CACHE_VARNISH" = "true" ]]; then
+    $MAGENTO_COMMAND config:set system/full_page_cache/caching_application 2
 fi
 
 echo "Fixing file permissions.."
