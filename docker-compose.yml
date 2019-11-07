@@ -2,30 +2,53 @@ version: "2"
 services:
   varnish:
     image: daiduongvo18/magento2-varnish:latest
-    ports:
-      - 80:80
+    expose:
+      - 80
     links:
       - web
     # volumes:
     #   - ./docker/provision/varnish/etc/varnish.vcl:/data/varnish.vcl
+    environment:
+      - VIRTUAL_HOST=magento2.docker
+      - HTTPS_METHOD=noredirect
+      - HSTS=off
+    networks:
+      - default
+      - nginx-proxy
 
   web:
     image: daiduongvo18/magento2-nginx:1.9
-    ports:
+    expose:
       - 80
     links:
       - fpm
+      - fpm-xdebug
     volumes_from:
       - appdata
-    volumes:
-      - ./docker/provision/nginx/etc/vhost.conf:/etc/nginx/conf.d/default.conf
+    # volumes:
+      # - ./docker/provision/nginx/etc/vhost.conf:/etc/nginx/conf.d/default.conf
     env_file:
       - ./global.env
 
   fpm:
     hostname: fpm.magento2.docker
     image: daiduongvo18/magento2-php:7.2-fpm
-    ports:
+    expose:
+      - 9000
+    links:
+      - db
+      - redis
+      - rabbitmq
+      - elasticsearch
+    volumes_from:
+      - appdata
+    env_file:
+      - ./global.env
+
+  fpm-xdebug:
+    hostname: fpm-xdebug.magento2.docker
+    image: daiduongvo18/magento2-php:7.2-fpm
+    expose:
       - 9000
     links:
       - db
@@ -37,7 +60,7 @@ services:
     env_file:
       - ./global.env
     environment:
-      # - PHP_ENABLE_XDEBUG=true
+      - PHP_ENABLE_XDEBUG=true
       # - PHP_ENABLE_BLACKFIRE=false
       # - XDEBUG_CONFIG=remote_connect_back=0 remote_host=172.17.0.1
       - PHP_IDE_CONFIG=serverName=magento2.docker
