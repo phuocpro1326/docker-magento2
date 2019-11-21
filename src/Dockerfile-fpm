@@ -1,4 +1,10 @@
-<?php include "Dockerfile"; ?>
+<?php 
+$imageSpecificPhpExtensions = [
+    'opcache'
+];
+
+include "Dockerfile";
+?>
 
 ENV MAGENTO_RUN_MODE developer
 ENV UPLOAD_MAX_FILESIZE 64M
