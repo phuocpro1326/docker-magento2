@@ -97,6 +97,7 @@ mkdir -p "${MAGENTO_ROOT}/var/profiler"
 <?php elseif ($flavour === 'fpm'): ?>
 # Configure PHP-FPM
 [ ! -z "${MAGENTO_RUN_MODE}" ] && sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
+[ ! -z "${FPM_PM_MAX_REQUESTS}" ] && sed -i "s/!FPM_PM_MAX_REQUESTS!/${FPM_PM_MAX_REQUESTS}/" /usr/local/etc/php-fpm.conf
 <?php endif ?>
 
 exec "$@"
