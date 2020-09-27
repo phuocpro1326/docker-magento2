@@ -60,7 +60,7 @@ services:
 
   cli:
     hostname: cli.magento2.docker
-    image: daiduongvo18/magento2-php:7.2-cli
+    image: phuocpro1326/magento2-php:7.2-cli
     links:
       - db
       - redis
@@ -68,6 +68,7 @@ services:
       - elasticsearch
     volumes:
       - ~/.composer/cache:/root/.composer/cache
+     # - ./src/bin/magento-installer:/usr/local/bin/magento-installer
     volumes_from:
       - appdata
     env_file:
