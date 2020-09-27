@@ -73,7 +73,7 @@ if [ "${PHP_ENABLE_XDEBUG_PROFILER_TRIGGER}" == "true" ]; then
 fi
 sed -i "s/!PHP_ENABLE_XDEBUG_PROFILER_TRIGGER!/${FLAG}/" /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 
-mkdir -p "${MAGENTO_ROOT}/var/profiler"
+#mkdir -p "${MAGENTO_ROOT}/var/profiler"
 
 [ "$PHP_ENABLE_XDEBUG" = "true" ] && \
     docker-php-ext-enable xdebug && \
