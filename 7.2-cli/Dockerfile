@@ -22,7 +22,8 @@ RUN apt-get update \
     rsyslog \ 
     mariadb-client \ 
     git \ 
-    redis-tools
+    redis-tools \ 
+    gnupg2
 
 # Configure the gd library
 RUN docker-php-ext-configure \
@@ -39,7 +40,9 @@ RUN docker-php-ext-install \
   xsl \ 
   zip \ 
   soap \ 
-  bcmath
+  bcmath \ 
+  pcntl \ 
+  sockets
 # Install Xdebug (but don't enable)
 RUN pecl install -o -f xdebug
 
@@ -58,6 +61,11 @@ ADD docker-entrypoint.sh /docker-entrypoint.sh
 RUN ["chmod", "+x", "/docker-entrypoint.sh"]
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
+# install yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y yarn && yarn global add grunt
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_GITHUB_TOKEN ""

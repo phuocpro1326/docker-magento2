@@ -34,7 +34,8 @@ RUN docker-php-ext-install \
   xsl \ 
   zip \ 
   soap \ 
-  bcmath
+  bcmath \ 
+  opcache
 # Install Xdebug (but don't enable)
 RUN pecl install -o -f xdebug
 
@@ -57,6 +58,7 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 ENV MAGENTO_RUN_MODE developer
 ENV UPLOAD_MAX_FILESIZE 64M
 ENV PHP_ENABLE_BLACKFIRE false
+ENV FPM_PM_MAX_REQUESTS 100
 
 RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
     && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \

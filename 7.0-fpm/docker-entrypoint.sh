@@ -41,6 +41,20 @@ fi
 [ ! -z "${PHP_MEMORY_LIMIT}" ] && sed -i "s/!PHP_MEMORY_LIMIT!/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/conf.d/zz-magento.ini
 [ ! -z "${UPLOAD_MAX_FILESIZE}" ] && sed -i "s/!UPLOAD_MAX_FILESIZE!/${UPLOAD_MAX_FILESIZE}/" /usr/local/etc/php/conf.d/zz-magento.ini
 
+FLAG=0
+if [ "${PHP_ENABLE_XDEBUG_PROFILER}" == "true" ]; then
+    FLAG=1
+fi
+sed -i "s/!PHP_ENABLE_XDEBUG_PROFILER!/${FLAG}/" /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
+
+FLAG=0
+if [ "${PHP_ENABLE_XDEBUG_PROFILER_TRIGGER}" == "true" ]; then
+    FLAG=1
+fi
+sed -i "s/!PHP_ENABLE_XDEBUG_PROFILER_TRIGGER!/${FLAG}/" /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
+
+mkdir -p "${MAGENTO_ROOT}/var/profiler"
+
 [ "$PHP_ENABLE_XDEBUG" = "true" ] && \
     docker-php-ext-enable xdebug && \
     echo "Xdebug is enabled"
@@ -51,5 +65,6 @@ fi
 
 # Configure PHP-FPM
 [ ! -z "${MAGENTO_RUN_MODE}" ] && sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
+[ ! -z "${FPM_PM_MAX_REQUESTS}" ] && sed -i "s/!FPM_PM_MAX_REQUESTS!/${FPM_PM_MAX_REQUESTS}/" /usr/local/etc/php-fpm.conf
 
 exec "$@"
