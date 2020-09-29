@@ -18,7 +18,21 @@ A collection of Docker images for running Magento 2 through nginx and on the com
     docker-compose up -d
     docker-compose restart
 
-## Configuration
+## Note command
+List networks
+
+    docker network ls
+Inspect a network is view network configuration details
+
+    docker network inspect <network>
+List the Linux bridges on your Docker host
+
+    sudo apt-get install bridge-utils
+Then, list the bridges on your Docker host, by running `brctl show`
+Run a shell inside that ubuntu container by running `docker exec -it <CONTAINER ID> /bin/bash`.
+Next, we need to install the ping program. So, lets run `apt-get update && apt-get install -y iputils-ping`.
+
+## Configuration    
 
 Configuration is driven through environment variables.  A comprehensive list of the environment variables used can be found in each `Dockerfile` and the commands in each `bin/` directory.
 
