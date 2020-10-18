@@ -12,9 +12,11 @@ MAINTAINER Nick Jones <nick@nicksays.co.uk>
         'libjpeg62-turbo-dev',
         'libmcrypt-dev',
         'libpng-dev',
+        'libzip-dev',
         'libxslt1-dev',
         'sendmail-bin',
         'sendmail',
+        'bash-completion',
         'sudo'
     ], $imageSpecificPackages ?? [])
 ?>

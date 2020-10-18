@@ -14,9 +14,11 @@ RUN apt-get update \
     libjpeg62-turbo-dev \ 
     libmcrypt-dev \ 
     libpng-dev \ 
+    libzip-dev \ 
     libxslt1-dev \ 
     sendmail-bin \ 
     sendmail \ 
+    bash-completion \ 
     sudo \ 
     cron \ 
     rsyslog \ 

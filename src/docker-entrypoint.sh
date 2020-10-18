@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "source /etc/profile.d/bash_completion.sh" >> ~/.bashrc
+grep -wq '^source /etc/profile.d/bash_completion.sh' ~/.bashrc || echo 'source /etc/profile.d/bash_completion.sh'>>~/.bashrc
+source /etc/profile.d/bash_completion.sh
+
 [ "$DEBUG" = "true" ] && set -x
 
 # If asked, we'll ensure that the www-data is set to the same uid/gid as the
