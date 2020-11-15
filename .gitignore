@@ -1,3 +1,4 @@
 /composer.env
 /magento
 /docker
+!.DS_Store

@@ -32,6 +32,9 @@ Then, list the bridges on your Docker host, by running `brctl show`
 Run a shell inside that ubuntu container by running `docker exec -it <CONTAINER ID> /bin/bash`.
 Next, we need to install the ping program. So, lets run `apt-get update && apt-get install -y iputils-ping`.
 
+## Docker Build special image
+docker build <folder_include_dockerFile>
+    docker build 7.2-fpm
 ## Configuration    
 
 Configuration is driven through environment variables.  A comprehensive list of the environment variables used can be found in each `Dockerfile` and the commands in each `bin/` directory.

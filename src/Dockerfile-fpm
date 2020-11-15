@@ -1,6 +1,7 @@
 <?php 
 $imageSpecificPhpExtensions = [
-    'opcache'
+    'opcache',
+    'sockets'
 ];
 
 include "Dockerfile";
