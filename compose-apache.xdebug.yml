@@ -1,0 +1,32 @@
+version: "2"
+services:
+    web:
+        image: webdevops/php-apache-dev:7.2-alpine
+        user: application
+        volumes_from:
+            - appdata
+        extends: generic
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - redis
+            - db
+    generic:
+        image: alpine
+        environment:
+            - WEB_ALIAS_DOMAIN=magento2.docker
+            - WEB_DOCUMENT_ROOT=/app/pub
+            - PHP_DATE_TIMEZONE=EST
+            - PHP_DISPLAY_ERRORS=1
+            - PHP_MEMORY_LIMIT=2048M
+            - PHP_MAX_EXECUTION_TIME=300
+            - PHP_POST_MAX_SIZE=500M
+            - PHP_UPLOAD_MAX_FILESIZE=1024M
+            - PHP_DEBUGGER=xdebug
+            - PHP_IDE_CONFIG=serverName=magento_local_docker
+            - 'XDEBUG_CONFIG=remote_host=host.docker.internal remote_autostart=0 remote_mode=req'
+    appdata:
+        image: tianon/true
+        volumes:
+            - ./:/app

@@ -55,6 +55,13 @@ Configuration is driven through environment variables.  A comprehensive list of 
 
 A sample `docker-compose.yml` is provided in this repository.
 
+## Use docker with apache
+Use sample `compose-apache.yml`
+- Apache web service:
+  - Default: `docker-compose -f compose-apache.yml -f docker-compose-base.yml up -d`
+  - Using Xdebug: `docker-compose -f compose-apache.xdebug.yml -f docker-compose-base.yml  up -d`
+
+Note: copy the file composer-xxx.yml (2 files) into your project
 ## CLI Usage
 
 A number of commands are baked into the image and are available on the `$PATH`. These are:

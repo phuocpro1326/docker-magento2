@@ -1,0 +1,44 @@
+version: "2"
+services:
+    db:
+        image: 'mariadb:10.0'
+        volumes_from:
+            - dbdata
+        environment:
+            - MYSQL_ROOT_PASSWORD=magento2
+            - MYSQL_DATABASE=magento2
+            - MYSQL_USER=magento2
+            - MYSQL_PASSWORD=magento2
+        ports:
+            - 3306
+    redis:
+        image: 'redis:3.0'
+        volumes:
+            - /data
+        ports:
+            - 6379
+    phpmyadmin:
+        image: 'phpmyadmin/phpmyadmin'
+        ports:
+            - '5640:80'
+        environment:
+            - MYSQL_ROOT_PASSWORD=magento2
+    deploy:
+        image: 'magento/magento-cloud-docker-php:7.2-cli'
+        depends_on:
+            - db
+            - redis
+        volumes:
+            - './:/app'
+            - '~/.composer/cache:/root/.composer/cache'
+            - './.docker/mnt:/mnt'
+            - './.docker/tmp:/tmp'
+    appdata:
+        image: tianon/true
+        volumes:
+            - ./:/app
+    dbdata:
+        image: tianon/true
+        volumes:
+            - './.docker/mysql/stored:/var/lib/mysql'
+            - './.docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d'
