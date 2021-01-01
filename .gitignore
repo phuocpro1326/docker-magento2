@@ -2,3 +2,4 @@
 /magento
 /docker
 !.DS_Store
+.idea

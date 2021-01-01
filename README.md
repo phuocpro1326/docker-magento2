@@ -33,7 +33,8 @@ Run a shell inside that ubuntu container by running `docker exec -it <CONTAINER 
 Next, we need to install the ping program. So, lets run `apt-get update && apt-get install -y iputils-ping`.
 
 ## Docker Build special image
-docker build <folder_include_dockerFile>
+docker build <folder_include_dockerFile>: 
+
     docker build 7.2-fpm
 ## Configuration    
 
