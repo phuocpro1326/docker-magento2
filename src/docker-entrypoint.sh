@@ -34,6 +34,7 @@ fi
 # Ensure our Magento directory exists
 mkdir -p $MAGENTO_ROOT
 chown www-data:www-data $MAGENTO_ROOT
+chmod 777 $MAGENTO_ROOT
 
 <?php if ($flavour === 'cli'): ?>
 CRON_LOG=/var/log/cron.log

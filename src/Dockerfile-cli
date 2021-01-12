@@ -8,11 +8,8 @@ $imageSpecificPackages = [
     'gnupg2', // dependency for yarn installation
 ];
 
-$imageSpecificPhpExtensions = [
-    'pcntl',
-    'sockets'
-];
-
+$imageSpecificPhpExtensions = array_merge($imageSpecificPhpExtensions
+,['pcntl', 'sockets']);
 include "Dockerfile";
 ?>
 

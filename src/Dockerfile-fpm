@@ -1,8 +1,6 @@
-<?php 
-$imageSpecificPhpExtensions = [
-    'opcache',
-    'sockets'
-];
+<?php
+$imageSpecificPhpExtensions = array_merge($imageSpecificPhpExtensions
+,['opcache', 'sockets']);
 
 include "Dockerfile";
 ?>

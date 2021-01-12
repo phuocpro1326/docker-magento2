@@ -41,14 +41,14 @@ RUN docker-php-ext-install \
   opcache \ 
   sockets
 # Install Xdebug (but don't enable)
-RUN pecl install -o -f xdebug
+RUN pecl install -o -f xdebug-2.8.1
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_ENABLE_XDEBUG false
 ENV MAGENTO_ROOT /var/www/magento
 
 ENV DEBUG false
-ENV UPDATE_UID_GID false
+ENV UPDATE_UID_GID true
 
 ADD etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 ADD etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini
