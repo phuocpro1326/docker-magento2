@@ -87,7 +87,7 @@
       "etc/php-cli.ini": {},
       "etc/php-xdebug.ini": {}
     },
-    "phpExtensions": [],
+    "phpExtensions": ["mcrypt"],
     "xdebugVersion": "2.8.1"
   },
   "7.1-fpm": {
@@ -104,7 +104,7 @@
       "etc/php-blackfire.ini": {},
       "etc/php-fpm.conf": {}
     },
-    "phpExtensions": [],
+    "phpExtensions": ["mcrypt"],
     "xdebugVersion": "2.8.1"
   },
   "7.2-cli": {
