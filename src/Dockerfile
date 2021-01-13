@@ -54,7 +54,7 @@ RUN pecl install -o -f <?php printf("xdebug%s\n", $xdebugVersion) ?>
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_ENABLE_XDEBUG false
-ENV MAGENTO_ROOT /app
+ENV MAGENTO_ROOT /var/www/magento
 
 ENV DEBUG false
 ENV UPDATE_UID_GID true
