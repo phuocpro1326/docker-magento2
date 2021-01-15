@@ -35,6 +35,7 @@ fi
 mkdir -p $MAGENTO_ROOT
 chown www-data:www-data $MAGENTO_ROOT
 chmod 777 $MAGENTO_ROOT
+cd $MAGENTO_ROOT
 
 CRON_LOG=/var/log/cron.log
 

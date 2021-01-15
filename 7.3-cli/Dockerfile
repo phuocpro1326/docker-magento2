@@ -43,7 +43,6 @@ RUN docker-php-ext-install \
   zip \ 
   soap \ 
   bcmath \ 
-  mcrypt \ 
   pcntl \ 
   sockets
 # Install Xdebug (but don't enable)
@@ -51,7 +50,7 @@ RUN pecl install -o -f xdebug-2.8.1
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_ENABLE_XDEBUG false
-ENV MAGENTO_ROOT /app
+ENV MAGENTO_ROOT /var/www/magento
 
 ENV DEBUG false
 ENV UPDATE_UID_GID true
