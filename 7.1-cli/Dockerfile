@@ -51,7 +51,7 @@ RUN pecl install -o -f xdebug-2.8.1
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_ENABLE_XDEBUG false
-ENV MAGENTO_ROOT /var/www/magento
+ENV MAGENTO_ROOT /app
 
 ENV DEBUG false
 ENV UPDATE_UID_GID true
@@ -72,8 +72,8 @@ RUN apt-get update && apt-get install -y yarn && yarn global add grunt
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_GITHUB_TOKEN ""
-ENV COMPOSER_MAGENTO_USERNAME ""
-ENV COMPOSER_MAGENTO_PASSWORD ""
+ENV COMPOSER_MAGENTO_USERNAME "7cc17654818c2da873e1aa3dfe7997bc"
+ENV COMPOSER_MAGENTO_PASSWORD "4d6650b40293408f692ef937f7cf2bcc"
 ENV COMPOSER_BITBUCKET_KEY ""
 ENV COMPOSER_BITBUCKET_SECRET ""
 
@@ -82,7 +82,13 @@ VOLUME /root/.composer/cache
 ADD etc/php-cli.ini /usr/local/etc/php/conf.d/zz-magento.ini
 
 # Get composer installed to /usr/local/bin/composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+#RUN php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+RUN php composer-setup.php --version=1.10.22 --install-dir=/usr/local/bin --filename=composer
+RUN php -r "unlink('composer-setup.php');"
+
 
 # Install n98-magerun2.phar and move to /usr/local/bin/
 RUN curl -O https://files.magerun.net/n98-magerun2.phar && chmod +x ./n98-magerun2.phar && mv ./n98-magerun2.phar /usr/local/bin/

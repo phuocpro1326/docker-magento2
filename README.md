@@ -43,7 +43,7 @@ Configuration is driven through environment variables.  A comprehensive list of 
 * `PHP_MEMORY_LIMIT` - The memory limit to be set in the `php.ini`
 * `UPLOAD_MAX_FILESIZE` - Upload filesize limit for PHP and Nginx
 * `MAGENTO_RUN_MODE` - Valid values, as defined in `Magento\Framework\App\State`: `developer`, `production`, `default`.
-* `MAGENTO_ROOT` - The directory to which Magento should be installed (defaults to `/var/www/magento`)
+* `MAGENTO_ROOT` - The directory to which Magento should be installed (defaults to `/app`)
 * `COMPOSER_GITHUB_TOKEN` - Your [GitHub OAuth token](https://getcomposer.org/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens), should it be needed
 * `COMPOSER_MAGENTO_USERNAME` - Your Magento Connect public authentication key ([how to get](http://devdocs.magento.com/guides/v2.0/install-gde/prereq/connect-auth.html))
 * `COMPOSER_MAGENTO_PASSWORD` - Your Magento Connect private authentication key
@@ -116,7 +116,18 @@ A lot of the configuration for each image is the same, with the difference being
 To build all `Dockerfile`s, run the `builder.php` script in the `php:7` Docker image:<!-- Yo dawg, I heard you like Docker images... -->
 
     docker run --rm -it -v $(pwd):/src php:7 php /src/builder.php
+## Build and test image in local
 
+    docker build -t <name Image Local> <Folder build image>  
+    ex: docker build -t local.7.2-cli 7.2-cli
+
+  In docker compose will use image name : `image: local.7.2-cli`
+
+  If just test build specific image, ex: 
+    
+    1. change image folder for build in cli : `context: 7.2-cli`
+    2. docker-compose -f docker-compose-build.yml  build cli
+    3. docker-compose -f docker-compose-build.yml run cli bash
 ### Adding new images to the build config
 
 The build configuration is controlled by the `config.json` file. Yeah element in the top level hash is a new build target, using the following syntax:

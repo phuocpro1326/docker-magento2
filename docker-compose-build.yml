@@ -7,7 +7,7 @@ services:
       - 80:80
     links:
       - web
-    # volumes:
+    # lsvolumes:
     #   - ./docker/provision/varnish/etc/varnish.vcl:/data/varnish.vcl
 
   web:
@@ -76,22 +76,21 @@ services:
       - appdata
     env_file:
       - ./global.env
-      - ./composer.env
     environment:
       # - PHP_ENABLE_XDEBUG=false
       - XDEBUG_CONFIG=idekey=PHPSTORM remote_connect_back=0 remote_host=172.17.0.1
       - PHP_IDE_CONFIG=serverName=dev.riki.local
       - M2SETUP_PRODUCT=community
-      - M2SETUP_VERSION=2.3.*
+      - M2SETUP_VERSION=2.3.5
       - M2SETUP_USE_SAMPLE_DATA=true
       - M2SETUP_INSTALL_DB=true
       - M2SETUP_DB_HOST=db
       - M2SETUP_DB_NAME=magento2
       - M2SETUP_DB_USER=magento2
       - M2SETUP_DB_PASSWORD=magento2
-      - $M2SETUP_SESSION_SAVE=redis
-      - $M2SETUP_SESSION_SAVE_REDIS_HOST=redis
-      - $M2SETUP_SESSION_SAVE_REDIS_DB=0
+      - M2SETUP_SESSION_SAVE=redis
+      - M2SETUP_SESSION_SAVE_REDIS_HOST=redis
+      - M2SETUP_SESSION_SAVE_REDIS_DB=0
       - M2SETUP_CACHE_BACKEND=redis
       - M2SETUP_CACHE_BACKEND_REDIS_SERVER=redis
       - M2SETUP_CACHE_BACKEND_REDIS_DB=1

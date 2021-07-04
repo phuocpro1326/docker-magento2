@@ -14,7 +14,7 @@ MAGENTO_COMMAND="magento-command"
 
 if [ ! -f "$MAGENTO_ROOT/composer.json" ]; then
     echo "Creating Magento ($M2SETUP_PRODUCT $M2SETUP_VERSION) project from composer"
-
+    rm -fr $MAGENTO_ROOT
     composer create-project \
         --repository-url=https://repo.magento.com/ \
         magento/project-$M2SETUP_PRODUCT-edition=$M2SETUP_VERSION \
@@ -32,7 +32,7 @@ else
     echo "Magento installation found in $MAGENTO_ROOT, installing composer dependencies"
     composer --working-dir=$MAGENTO_ROOT install
 fi
-
+composer --verison
 chown -R www-data:www-data $MAGENTO_ROOT
 
 if [ ! "$M2SETUP_INSTALL_DB" = "false" ]; then
