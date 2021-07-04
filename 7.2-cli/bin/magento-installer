@@ -32,7 +32,7 @@ else
     echo "Magento installation found in $MAGENTO_ROOT, installing composer dependencies"
     composer --working-dir=$MAGENTO_ROOT install
 fi
-composer --verison
+
 chown -R www-data:www-data $MAGENTO_ROOT
 
 if [ ! "$M2SETUP_INSTALL_DB" = "false" ]; then
