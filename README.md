@@ -120,6 +120,7 @@ To build all `Dockerfile`s, run the `builder.php` script in the `php:7` Docker i
 
     docker build -t <name Image Local> <Folder build image>  
     ex: docker build -t local.7.2-cli 7.2-cli
+    or: docker build -t phuocpro1326/magento2-php:7.2-cli 7.2-cli
 
   In docker compose will use image name : `image: local.7.2-cli`
 

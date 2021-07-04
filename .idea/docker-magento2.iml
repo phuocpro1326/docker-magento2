@@ -493,6 +493,7 @@
       <excludeFolder url="file://$MODULE_DIR$/magento/vendor/yotpo/magento2-module-yotpo-reviews" />
       <excludeFolder url="file://$MODULE_DIR$/magento/vendor/yubico/u2flib-server" />
       <excludeFolder url="file://$MODULE_DIR$/docker" />
+      <excludeFolder url="file://$MODULE_DIR$/magento" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

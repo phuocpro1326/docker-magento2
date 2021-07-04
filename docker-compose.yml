@@ -36,7 +36,7 @@ services:
 
   fpm:
     hostname: fpm.magento2.docker
-    image: phuocpro1326/magento2-php:7.1-fpm
+    image: phuocpro1326/magento2-php:7.2-fpm
     expose:
       - 9000
     links:
@@ -55,7 +55,7 @@ services:
       - PHP_IDE_CONFIG=serverName=magento2.docker
   fpm-xdebug:
     hostname: fpm-xdebug.magento2.docker
-    image: phuocpro1326/magento2-php:7.1-fpm
+    image: phuocpro1326/magento2-php:7.2-fpm
     expose:
       - 9000
     links:
