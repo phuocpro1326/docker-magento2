@@ -64,11 +64,6 @@ RUN ["chmod", "+x", "/docker-entrypoint.sh"]
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-# install yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y yarn && yarn global add grunt
-
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_GITHUB_TOKEN ""
 ENV COMPOSER_MAGENTO_USERNAME "7cc17654818c2da873e1aa3dfe7997bc"

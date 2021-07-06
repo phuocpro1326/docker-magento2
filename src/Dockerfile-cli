@@ -12,11 +12,12 @@ $imageSpecificPhpExtensions = array_merge($imageSpecificPhpExtensions
 ,['pcntl', 'sockets']);
 include "Dockerfile";
 ?>
-
+<?php if ($version !== '7.0'): ?>
 # install yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && apt-get install -y yarn && yarn global add grunt
+<?php endif ?>
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_GITHUB_TOKEN ""
