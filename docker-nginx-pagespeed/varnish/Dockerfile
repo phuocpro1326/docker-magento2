@@ -1,0 +1,2 @@
+FROM newsdev/varnish:4.1.0
+ENV VARNISH_MEMORY 100m

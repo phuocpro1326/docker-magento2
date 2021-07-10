@@ -1,0 +1,40 @@
+version: "3"
+services:
+  nginx:
+    build: .
+    container_name: nginx-pagespeed
+    links:
+      - fpm
+    env_file: .env-example
+    environment:
+      - WEB_ALIAS_DOMAIN=morris.docker
+      - WEB_DOCUMENT_ROOT=/app
+    volumes_from:
+      - appdata
+  varnish:
+    build: ./varnish
+    container_name: varnish
+    ports:
+      - "80:80"
+    depends_on:
+      - nginx
+    volumes:
+    - ./varnish/default.vcl:/etc/varnish/default.vcl
+  fpm:
+    hostname: fpm.magento2.docker
+    image: webdevops/php:7.2-alpine
+    expose:
+      - 9000
+    volumes_from:
+      - appdata
+    environment:
+      - PHP_ENABLE_XDEBUG=false
+      - PHP_MAX_EXECUTION_TIME=600
+      - PHP_DISPLAY_ERRORS=1
+      - PHP_MEMORY_LIMIT=-1
+      - WEB_DOCUMENT_ROOT=/app
+  appdata:
+    image: tianon/true
+    volumes:
+      - ./html:/app
+      - ./docker/data/redis:/data # redis
