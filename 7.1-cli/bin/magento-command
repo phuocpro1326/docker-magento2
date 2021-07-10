@@ -1,7 +1,0 @@
-#!/bin/bash
-
-[ "$DEBUG" = "true" ] && set -x
-
-MAGENTO_COMMAND="$MAGENTO_ROOT/bin/magento"
-
-exec sudo -Eu www-data -- php $MAGENTO_COMMAND "$@"

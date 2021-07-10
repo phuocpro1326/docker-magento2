@@ -7,7 +7,7 @@ import std;
 
 backend default {
     .host = "web";
-    .port = "80";
+    .port = "443";
     .first_byte_timeout = 600s;
     .probe = {
         .url = "/health_check.php";
@@ -15,7 +15,7 @@ backend default {
         .interval = 5s;
         .window = 10;
         .threshold = 5;
-d   }
+    }
 }
 
 sub vcl_recv {
